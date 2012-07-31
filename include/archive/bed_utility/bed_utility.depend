@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1298911677 source:c:\work\tools\bed_utility\bedutility.cpp
+	"bedFile.h"
+	"bedUtility.h"
+	<iostream>
+	<string>
+	<fstream>
+	<vector>
+
+1298055435 c:\work\tools\bed_class\bed_class\bedfile.h
+	<iostream>
+	<string>
+	<fstream>
+	<vector>
+
+1298911618 c:\work\tools\bed_utility\bedutility.h
+
+1303409767 source:c:\work\tools\utility\bed_utility\bedutility.cpp
+	"bedFile.h"
+	"bedUtility.h"
+	"chromConstants.h"
+
+1303409729 c:\work\tools\class\bed_class\bedfile.h
+	<iostream>
+	<string>
+	<fstream>
+	<vector>
+	"utility.h"
+	"chromConstants.h"
+
+1303406652 c:\work\tools\utility\myutilityfiles\utility.h
+	<string>
+
+1303408468 c:\work\tools\utility\myutilityfiles\chromconstants.h
+
+1303406658 c:\work\tools\utility\bed_utility\bedutility.h
+
+1303406701 c:\work\tools\utility\bed_utility\chromconstants.h
+

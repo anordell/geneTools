@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="StatTools" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/StatTools.exe" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc47" />
+				<Option parameters='peakStats --bed --file &quot;/home/gradues/nordell/Dropbox/Laboratoire Gevry/Alexei/Subgroups_Re-clustering_ERa/C-ER22-1-5205.bed&quot; &gt; exemple.txt' />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="../../libs/debug/libgeneClass.a" />
+					<Add library="../../libs/debug/libmyUtilityFiles.a" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/StatTools" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc47" />
+				<Option parameters="diffPlot -e 4000 -i /media/Data/Work/data/Subset/SubgroupsBed/C-H-3-1-6201.bed -s /media/Data/Work/data/Chip-Seq/Extend/Extended/H2AZE2Final.extend.sam -n H2AZE2 -s /media/Data/Work/data/Chip-Seq/Extend/Extended/H2AZE2Final.extend.sam -n H2AZE2BIS -o data.txt " />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-fopenmp" />
+					<Add option="-std=c++11" />
+					<Add option="-lpthread" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="../../libs/release/libgeneClass.a" />
+					<Add library="../../libs/release/libmyUtilityFiles.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="../../myUtilityFiles" />
+			<Add directory="../../class/geneClass" />
+			<Add directory="../../libs/gnuplot-cpp" />
+			<Add directory="../../class/geneClass/boost" />
+		</Compiler>
+		<Linker>
+			<Add option="-static-libgcc" />
+			<Add option="-static-libstdc++" />
+		</Linker>
+		<Unit filename="densityStats.cpp" />
+		<Unit filename="densityStats.h" />
+		<Unit filename="diffPlot.cpp" />
+		<Unit filename="diffPlot.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="peakStats.cpp" />
+		<Unit filename="peakStats.h" />
+		<Unit filename="signalMap.cpp" />
+		<Unit filename="signalMap.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

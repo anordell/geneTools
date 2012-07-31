@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Barrier_Identification" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\Barrier_Identification" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="..\..\bed_class\bed_class" />
+					<Add directory="..\..\bed_class\bed_class\bin\Debug" />
+				</Compiler>
+				<Linker>
+					<Add library="..\..\bed_class\bed_class\bin\Debug\libbedFile.a" />
+					<Add library="..\..\bed_utility\obj\Debug\libbed_utility.a" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\Barrier_Identification" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="..\..\bed_class\bed_class" />
+					<Add directory="..\..\bed_class\bed_class\bin\Release" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="..\..\bed_class\bed_class\bin\Release\libbedFile.a" />
+					<Add library="..\..\bed_utility\obj\Release\libbed_utility.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="..\..\bed_class\bed_class" />
+			<Add directory="..\..\bed_utility" />
+		</Compiler>
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

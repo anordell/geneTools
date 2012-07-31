@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="DensityTools" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/DensityTools" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc47" />
+				<Option parameters="densityFromFile -s /media/Data/Work/data/nucleosome/NoE2/nuc-map.merged.nodup.chr21.sam -o result.wig" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-static-libgcc" />
+					<Add option="-static-libstdc++" />
+					<Add library="../../libs/debug/libgeneClass.a" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/DensityTools" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc47" />
+				<Option parameters="generateSignal -i /media/SSD-Data/Textalexei/TSSautresgenes.bed -e 2000 -n H2RPB2AZ2 -s /media/SSD-Data/Textalexei/RBP2_E2_mcf7.cat.sam -o test" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add directory="../../myUtilityFiles" />
+					<Add directory="../../class/geneClass" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-static-libgcc" />
+					<Add option="-static-libstdc++" />
+					<Add library="../../libs/release/libgeneClass.a" />
+					<Add library="../../libs/release/libmyUtilityFiles.a" />
+				</Linker>
+			</Target>
+			<Target title="Parallel">
+				<Option output="DensityTools" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc47" />
+				<Compiler>
+					<Add option="-DGLIBCXX_PARALLEL" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="../../utility/myUtilityFiles" />
+			<Add directory="../../class/geneClass" />
+			<Add directory="../../libs/gnuplot-cpp" />
+			<Add directory="../../class/geneClass/boost" />
+			<Add directory="../../class/geneClass/boost/boost" />
+		</Compiler>
+		<Unit filename="densityFromFile.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="densityFromFile.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="divideTabFile.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="divideTabFile.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="generateSignal.cpp" />
+		<Unit filename="generateSignal.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="getDensity.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="getDensity.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="main.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="phasogram.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="phasogram.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="signalDiff.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="signalDiff.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

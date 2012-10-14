@@ -1,16 +1,18 @@
 #include <tclap/CmdLine.h>
 #include "generateSignal.h"
-#include "utility.h"
+#include "utility/utility.h"
 #include <string>
 #include <string.h>
 #include <fstream>
 #include <ostream>
 #include "uTags.h"
 #include "uRegion.h"
-#include "gnuplot_i.hpp"
+#include "gnuplot-cpp/gnuplot_i.hpp"
 
 //class Gnuplot;
 using namespace std;
+using namespace NGS;
+
 
 int current(0);
 int Increment()
@@ -79,8 +81,8 @@ void generateSignal(int argc, char* argv[])
 
                 /**< Overlap and get density */
                 uTagsExperiment tagTreat;
-                uRegionExperiment wigTreat;
                 utility::stringTocerr("Loading Sam/Wig");
+                uRegionExperiment wigTreat;
 
                 if (!(wigSwitch)){
                     tagTreat.loadFromSam(samStream);
@@ -98,18 +100,19 @@ void generateSignal(int argc, char* argv[])
                 setRegionsSize(regionExpCtrl, extendSize);
 
                 utility::stringTocerr("Measuring Density");
+                tagTreat.sortData();
+                regionExpCtrl.sortData();
 
                 regionExpCtrl.measureDensityOverlap(tagTreat);
                 utility::stringTocerr("Generating Signal");
-
                 try
                 {
                 if (!(wigSwitch)){
-                    regionExpCtrl.generateSignal(tagTreat);
+                        regionExpCtrl.generateSignal(tagTreat);
                     }
                 else
                     {
-                    regionExpCtrl.generateSignal(wigTreat);
+                        regionExpCtrl.generateSignal(wigTreat);
                    }
                 }
                 catch(skipped_elem_throw & e)
@@ -290,6 +293,14 @@ void generateSignal(int argc, char* argv[])
             errorTagPoint->debugElem();
         }
 
+        if (std::string const * ste =boost::get_error_info<string_error>(e) )
+            {
+            cerr << "Trace of crash" <<endl;
+            cerr << *ste;
+        }
+    }
+    catch (ugene_exception_base & e)
+    {
         if (std::string const * ste =boost::get_error_info<string_error>(e) )
             {
             cerr << "Trace of crash" <<endl;

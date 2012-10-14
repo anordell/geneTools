@@ -5,11 +5,10 @@
 #include <vector>
 #include <string>
 
-class uTagsExperiment;
+//class NGS::uTagsExperiment;
 
-
-std::vector<int> phasogram(const uTagsExperiment & tagExp, int pileSize, int graphSize);
-std::vector<int> mapTagNGStoDensity( uTagsChrom & tagChrom);
+std::vector<int> phasogram(const NGS::uTagsExperiment & tagExp, int pileSize, int graphSize);
+std::vector<int> mapTagNGStoDensity( NGS::uTagsChrom & tagChrom);
 void parsePhasogram(int argc, char* argv[]);
 
 

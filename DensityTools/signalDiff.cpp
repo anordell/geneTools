@@ -1,6 +1,6 @@
 #include <tclap/CmdLine.h>
 #include "signalDiff.h"
-#include "utility.h"
+#include "utility/utility.h"
 #include <string>
 #include <string.h>
 #include <fstream>
@@ -8,7 +8,7 @@
 #include "uTags.h"
 #include "uRegion.h"
 
-
+using namespace NGS;
 using namespace std;
 
 void signalDiff(int argc, char* argv[])
@@ -46,7 +46,7 @@ void signalDiff(int argc, char* argv[])
 
     uRegionExperiment regionExpCtrl,regionExpTreat;
     regionExpCtrl.loadFromTabFile(regionAStream);
-    regionExpTreat=regionExpCtrl;
+    regionExpTreat.loadFromTabFile(regionAStream);
 
     regionExpCtrl.measureDensityOverlap(tagControl);
 
@@ -62,10 +62,10 @@ void signalDiff(int argc, char* argv[])
     regionExpTreat.writeAll(Treat);
 }
 
-/** \brief Measure various distances between same elements of the exp
+/** \brief Measure various distances between same elements of the exp and adds them to the elements
  *
- * \param regionExpA uRegionExperiment&
- * \param regionExpB uRegionExperiment&
+ * \param regionExpA uRegionExperiment& Data A
+ * \param regionExpB uRegionExperiment& Data B with sites positions ordered identical too A
  * \return void
  *
  */
@@ -75,23 +75,47 @@ void generateDistanceScores( uRegionExperiment & regionExpA, uRegionExperiment &
     /**< Careful, this is temporary */
     float maxAll=0.0;
 
-    for (auto chromitA= regionExpA.first(); chromitA!=regionExpA.last() ; chromitA++)
+    for (auto chromitA= regionExpA.begin(); chromitA!=regionExpA.end() ; chromitA++)
     {
 
-        for (int i=0; i<chromitA->second.count(); i++)
+      /*  for (int i=0; i<chromitA->second.count(); i++)
         {
-            auto elemA=chromitA->second.getPSite(i);
-            auto signal =elemA->getSignal();
+
+        } */
+
+
+
+       for (auto seqIT = chromitA->second.begin();seqIT!=chromitA->second.end();seqIT++ ){
+            auto signal =seqIT->getSignal();
             maxAll=std::max(maxAll,*max_element(signal.begin(),signal.end()));
-        }
+       }
 
     }
-
-    for (auto chromitA= regionExpA.first(); chromitA!=regionExpA.last() ; chromitA++)
+    /**< Compare each pair of regions and generate it's distances */
+    for (auto chromitA= regionExpA.begin(); chromitA!=regionExpA.end() ; chromitA++)
     {
         auto chromitB= regionExpB.getpChrom(chromitA->first);
 
-        for (int i=0; i<chromitA->second.count(); i++)
+         auto seqITB =   chromitB->begin();
+         for (auto seqITA = chromitA->second.begin();seqITA!=chromitA->second.end();seqITA++ ){
+
+            vector<float> signalA= seqITA->getSignal();
+            vector<float> signalB = seqITB->getSignal();
+
+            int diffCount= (seqITA->getCount()-seqITB->getCount());
+            seqITA->setScore(diffCount,0);
+
+            float dist= clustering::align_distance(seqITA->getSignal(), seqITB->getSignal(),maxAll,(seqITA->getLenght()/10));
+            seqITA->setScore(dist,1);
+            float hausdorffScore = clustering::hausdorffTwoRegions(signalA,signalB);
+            seqITA->setScore(hausdorffScore,2);
+
+            float normeuclidean = clustering::norm_euclidean_dist(signalA,signalB);
+            seqITA->setScore(normeuclidean,3);
+
+            seqITB++;
+         }
+    /*    for (int i=0; i<chromitA->second.count(); i++)
         {
             auto elemA=chromitA->second.getPSite(i);
             auto elemB=chromitB->getPSite(i);
@@ -112,7 +136,7 @@ void generateDistanceScores( uRegionExperiment & regionExpA, uRegionExperiment &
 
             float normeuclidean = clustering::norm_euclidean_dist(signalA,signalB);
             elemA->setScore(normeuclidean,3);
-        }
+        }*/
 
     }
 

@@ -4,9 +4,9 @@
 #include <string.h>
 #include <fstream>
 #include "uTags.h"
-#include "utility.h"
+#include "utility/utility.h"
 #include "uRegion.h"
-
+using namespace NGS;
 using namespace std;
 /** \brief Taking a tab file and Sam file as input, we return the number of tags from the sam file overlapping our tab regions.
  *
@@ -72,7 +72,7 @@ vector<int> phasogram(const uTagsExperiment & tagExp, int pileSize, int graphSiz
     // auto pChrom =  notConst->getpChrom("chr18");
     vector<int> phasogram;
     phasogram.resize(graphSize);
-    for (auto chromIT= notConst->first(); chromIT!=notConst->last(); chromIT++)
+    for (auto chromIT= notConst->begin(); chromIT!=notConst->end(); chromIT++)
     {
         //auto tagChrom= tagExp.getpChrom("chr21");
         if ((*chromIT).second.count()>0)
@@ -125,7 +125,7 @@ vector<int> mapTagNGStoDensity( uTagsChrom & tagChrom)
         int pos=0;
         //Is strand is positive ( should be always for completed fragments ), get central position based on paired lenght or fragment lenght
         //If not, do nothing
-        if (tempTag.getStrand()=='+')
+        if (tempTag.getStrand()==StrandDir::FORWARD)
         {
             pos= (tempTag.getStart());
             //If central position is beyond our registered area, error. This happens as BWA something maps over our reference?

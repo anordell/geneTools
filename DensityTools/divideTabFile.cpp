@@ -1,11 +1,11 @@
 #include "divideTabFile.h"
-#include "utility.h"
+#include "utility/utility.h"
 #include "uRegion.h"
 #include <string>
 #include <string.h>
 #include <fstream>
 using namespace std;
-
+using namespace NGS;
 
 /** \brief Divide the given tab delimited file (string, int int ) into a bed file with each region being split into N bins according to parameters
  *

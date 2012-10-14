@@ -4,10 +4,9 @@
 #include <string.h>
 #include <fstream>
 #include "uTags.h"
-#include "utility.h"
+#include "utility/utility.h"
 #include "uRegion.h"
-
-
+using namespace NGS;
 
 
 using namespace std;

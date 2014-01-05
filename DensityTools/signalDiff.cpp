@@ -38,15 +38,26 @@ void signalDiff(int argc, char* argv[])
     cerr << " Loading" <<endl;
     /**< Overlap and get density */
     uTagsExperiment tagTreat, tagControl;
-    tagTreat.loadFromSam(samTreatStream);
-    tagTreat.sortData();
 
-    tagControl.loadFromSam(samControlStream);
-    tagControl.sortData();
+
+    uParser samParser(&samTreatStream,"SAM");
+
+    tagTreat.loadWithParser(samParser);
+    tagTreat.sortSites();
+
+
+    uParser samControlParser(&samControlStream,"SAM");
+    tagControl.loadWithParser(samControlParser);
+    tagControl.sortSites();
 
     uRegionExperiment regionExpCtrl,regionExpTreat;
-    regionExpCtrl.loadFromTabFile(regionAStream);
-    regionExpTreat.loadFromTabFile(regionAStream);
+
+    {uParser regParser(&regionAStream,"BED");
+
+    regionExpCtrl.loadWithParser(regParser);
+    }
+    uParser regParser(&regionAStream,"BED");
+    regionExpTreat.loadWithParser(regParser);
 
     regionExpCtrl.measureDensityOverlap(tagControl);
 
@@ -59,7 +70,9 @@ void signalDiff(int argc, char* argv[])
     //  ofstream Ctrl("Ctrl.txt");
     ofstream Treat("Treat.txt");
     // regionExpCtrl.writeAll(Ctrl);
-    regionExpTreat.writeAll(Treat);
+
+    uWriter regWriter(&Treat,"BED3");
+    regionExpTreat.writeWithWriter(regWriter);
 }
 
 /** \brief Measure various distances between same elements of the exp and adds them to the elements
@@ -105,7 +118,7 @@ void generateDistanceScores( uRegionExperiment & regionExpA, uRegionExperiment &
             int diffCount= (seqITA->getCount()-seqITB->getCount());
             seqITA->setScore(diffCount,0);
 
-            float dist= clustering::align_distance(seqITA->getSignal(), seqITB->getSignal(),maxAll,(seqITA->getLenght()/10));
+            float dist= clustering::align_distance(seqITA->getSignal(), seqITB->getSignal(),maxAll,(seqITA->getLength()/10));
             seqITA->setScore(dist,1);
             float hausdorffScore = clustering::hausdorffTwoRegions(signalA,signalB);
             seqITA->setScore(hausdorffScore,2);
@@ -129,7 +142,7 @@ void generateDistanceScores( uRegionExperiment & regionExpA, uRegionExperiment &
             int diffCount= (elemA->getCount()-elemB->getCount());
             elemA->setScore(diffCount,0);
 
-            float dist= clustering::align_distance(elemA->getSignal(), elemB->getSignal(),maxAll,(elemA->getLenght()/10));
+            float dist= clustering::align_distance(elemA->getSignal(), elemB->getSignal(),maxAll,(elemA->getLength()/10));
             elemA->setScore(dist,1);
             float hausdorffScore = clustering::hausdorffTwoRegions(signalA,signalB);
             elemA->setScore(hausdorffScore,2);

@@ -49,8 +49,8 @@ void parsePhasogram(int argc, char* argv[])
     }
 
     uTagsExperiment curExperiment;
-
-    curExperiment.loadFromSam(inputStream,true);
+    uParser samParser(&inputStream,"SAM");
+    curExperiment.loadWithParser(samParser);
     auto result=phasogram(curExperiment,pileSize, graphSize);
 
     for (int x:result)

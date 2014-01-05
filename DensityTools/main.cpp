@@ -10,7 +10,7 @@
 #include "densityFromFile.h"
 #include "signalDiff.h"
 #include "generateSignal.h"
-#include "histogramFromSam.h"
+//#include "histogramFromSam.h"
 
 using namespace std;
 using namespace NGS;
@@ -48,8 +48,8 @@ int main(int argc, char* argv[])
         signalDiff(argc, argv);
     else if (firstArg=="generateSignal")
         generateSignal(argc, argv);
-     else if (firstArg=="histogramFromSam")
-        histogramFromSam(argc, argv);
+    // else if (firstArg=="histogramFromSam")
+    //    histogramFromSam(argc, argv);
     else
     {
         printHelp();
@@ -67,5 +67,5 @@ void printHelp()
     cerr << "phasogram -f <filepath> -s <Graph Size> -p <Pile Size>" << endl;
     cerr << "densityFromSam -s <SamFile> -o [OutputPath]" << endl;
     cerr << "generateSignal " << endl;
-    cerr << "histogramFromSam" << endl;
+//    cerr << "histogramFromSam" << endl;
 }

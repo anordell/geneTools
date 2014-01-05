@@ -68,17 +68,18 @@ void divideTabFile(int argc, char* argv[])
         cerr <<"Invalid file name. File name is "<< pathname <<endl;
         return;
     }
-
+    uParser bed3Parser("BED",pathname);
+    uWriter bedWriter(&cout,"BED3");
     uRegionExperiment ourExp;
     try
     {
-        ourExp.loadFromTabFile(inputStream);
+        ourExp.loadWithParser(bed3Parser);
         //  auto ourChrom= ourExp.getpChrom("chr1");
 
         //  ourChrom->divideItemsIntoBinofSize(size,type);
         //  ourChrom->outputBedFormat(cout);
         ourExp.divideItemsIntoBinofSize(size,type);
-        ourExp.writeAsBedFile(cout);
+        ourExp.writeWithWriter(bedWriter);
     }
     catch(...)
     {

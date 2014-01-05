@@ -60,20 +60,37 @@ void getDensity(int argc, char* argv[])
 
     /**< Overlap and get density */
     uTagsExperiment tagExp;
-    tagExp.loadFromSam(inputStream);
+
+    uParser samParser(&inputStream,"SAM");
+    tagExp.loadWithParser(samParser);
+
+    uParser regParser(&tabStream,"SAM");
 
     uRegionExperiment regionExp;
-    regionExp.loadFromTabFile(tabStream);
+    regionExp.loadWithParser(regParser);
 
-    tagExp.sortData();
+    tagExp.sortSites();
     regionExp.measureDensityOverlap(tagExp);
+
+    vector<string> m_fieldList;
+    m_fieldList.push_back("CHR");
+    m_fieldList.push_back("START_POS");
+    m_fieldList.push_back("END_POS");
+    m_fieldList.push_back("DENSITY");
+
+		/**< Initialize writers */
+
     if (outputPath.size()!=0)
     {
-        ofstream outputOS(outputPath);
-
-        regionExp.writeDensityAsTab(outputOS);
+        //ofstream outputOS(outputPath);
+        uWriter writerCustom(outputPath, m_fieldList);
+        regionExp.writeWithWriter(writerCustom);
     }
-    else
-        regionExp.writeDensityAsTab(cout);
+    else{
+
+        uWriter writerCustom(&cout, m_fieldList);
+        regionExp.writeWithWriter(writerCustom);
+    }
+
 
 }

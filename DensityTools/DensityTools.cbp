@@ -10,7 +10,7 @@
 				<Option output="bin/Debug/DensityTools" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
-				<Option compiler="gcc47" />
+				<Option compiler="gcc" />
 				<Option parameters="densityFromFile -s /media/Data/Work/data/nucleosome/NoE2/nuc-map.merged.nodup.chr21.sam -o result.wig" />
 				<Compiler>
 					<Add option="-g" />
@@ -25,20 +25,20 @@
 				<Option output="../../bin/DensityTools" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
-				<Option compiler="gcc47" />
+				<Option compiler="gcc" />
 				<Option parameters="generateSignal -i /media/SSD-Data/Textalexei/TSSautresgenes.bed -e 2000 -n H2RPB2AZ2 -s /media/SSD-Data/Textalexei/RBP2_E2_mcf7.cat.sam -o test" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++11" />
-					<Add directory="../../myUtilityFiles" />
-					<Add directory="../../class/geneClass" />
+					<Add directory="../../NGSplusplus/" />
+					<Add directory="../../NGSplusplus/NGS" />
+					<Add directory="../include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 					<Add option="-static-libgcc" />
 					<Add option="-static-libstdc++" />
-					<Add library="../../libs/release/libgeneClass.a" />
-					<Add library="../../libs/release/libmyUtilityFiles.a" />
+					<Add library="/home/alexei/Documents/NGSplusplus/libs/libNGS.so" />
 				</Linker>
 			</Target>
 			<Target title="Parallel">

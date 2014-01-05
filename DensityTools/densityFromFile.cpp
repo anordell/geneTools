@@ -1,9 +1,9 @@
 #include "densityFromFile.h"
-#include "utility/utility.h"
+//#include "utility/utility.h"
 #include <string>
 #include <string.h>
 #include <fstream>
-#include "uTags.h"
+#include "NGS++.h"
 #include <tclap/CmdLine.h>
 using namespace std;
 using namespace NGS;
@@ -85,10 +85,12 @@ try{
     }
 
     /**< Overlap and get density */
+
+    uParser samParser(samPath,"SAM");
     uTagsExperiment tagExp;
-    tagExp.loadFromSam(inputStream);
+    tagExp.loadWithParser(samParser);  //loadFromSam(inputStream);
     cerr <<"Sorting" <<endl;
-    tagExp.sortData();
+    tagExp.sortSites();
 
 
     std::ofstream outputOS;
@@ -127,7 +129,7 @@ try{
         if( ( errorTagPoint=boost::get_error_info<tag_error>(e) ) )
         {
             cerr <<" We crashed working on this uTag" <<endl;
-            errorTagPoint->debugElem();
+            //errorTagPoint->debug();
         }
 
         if (std::string const * ste =boost::get_error_info<string_error>(e) )
@@ -202,7 +204,7 @@ void writeDensityFromFile(const uTagsChrom& tagChrom, std::ostream& out , bool b
                     densityValues.at(i)++;
                 else{
                     cerr << "Skipping the following tags as over chromSize of " <<densityValues.size() <<endl;
-                    Elem.debugElem();
+                   // Elem.debugElem();
 
                 }
             }

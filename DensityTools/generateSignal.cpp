@@ -85,23 +85,29 @@ void generateSignal(int argc, char* argv[])
                 uRegionExperiment wigTreat;
 
                 if (!(wigSwitch)){
-                    tagTreat.loadFromSam(samStream);
-                     tagTreat.sortData();}
+                     uParser samParser("SAM",samPathVector.at(i));
+                     tagTreat.loadWithParser(samParser);
+                     tagTreat.sortSites();}
                 else
                 {
-                    wigTreat.loadFromWig(samStream);
-                    wigTreat.sortData();}
+                    uParser wigParser("WIG",samPathVector.at(i));
+                    wigTreat.loadWithParser("SAM",samPathVector.at(i));
+                    wigTreat.sortSites();}
 
                 uRegionExperiment regionExpCtrl;
-                regionExpCtrl.loadFromTabFile(regionAStream);
+
+                uParser tabParser(regionAPath, "BED");
+
+                regionExpCtrl.loadWithParser(tabParser);
+
                 utility::stringTocerr("Loaded Interval");
 
                 /**< Normalise our sites */
                 setRegionsSize(regionExpCtrl, extendSize);
 
                 utility::stringTocerr("Measuring Density");
-                tagTreat.sortData();
-                regionExpCtrl.sortData();
+                tagTreat.sortSites();
+                regionExpCtrl.sortSites();
 
                 regionExpCtrl.measureDensityOverlap(tagTreat);
                 utility::stringTocerr("Generating Signal");
@@ -125,10 +131,12 @@ void generateSignal(int argc, char* argv[])
                     {
                         if (vecU->size()>0)
                         {
+
                             cerr << "Skipped "<<vecU->size()<< " tags, writing them to file tagErrors.txt" <<endl;
                             ofstream output(outputName+markName+"tagErrors.txt");
+                            uWriter errorWrite(&output,"SAM");
                             for (auto & x: *vecU)
-                                x.writeSamToOutput(output);
+                                x.writeToOutput(errorWrite);
                         }
                     }
                     if (vector<uRegion> const * vecR =boost::get_error_info<skipped_regions>(e) )
@@ -137,8 +145,9 @@ void generateSignal(int argc, char* argv[])
                         {
                             cerr << "Skipped "<<vecR->size()<< " regions, writing them to file regionErrors.txt" <<endl;
                             ofstream output(outputName+markName+"regionErrors.txt");
+                            uWriter errorWrite(&output,"BED3");
                             for (auto & x: *vecR)
-                                x.writeAll(output);
+                                x.writeToOutput(errorWrite);
 
                             cerr <<"Finished writing" <<endl;
                         }
@@ -285,12 +294,12 @@ void generateSignal(int argc, char* argv[])
         if( ( errorRegPoint =boost::get_error_info<region_error>(e)) )
         {
             cerr <<" We crashed working on this uRegion" <<endl;
-            errorRegPoint->debugElem();
+//            errorRegPoint->debugElem();
         }
         if( ( errorTagPoint=boost::get_error_info<tag_error>(e) ) )
         {
             cerr <<" We crashed working on this uTag" <<endl;
-            errorTagPoint->debugElem();
+      //      errorTagPoint->debugElem();
         }
 
         if (std::string const * ste =boost::get_error_info<string_error>(e) )
@@ -324,20 +333,20 @@ void setRegionsSize(uRegionExperiment & ourRegionExp, int extendSize)
 {
     ourRegionExp.applyOnSites([&](uRegion & Elem)
     {
-        int lenght= Elem.getLenght();
+        int lenght= Elem.getLength();
         if (lenght>extendSize)
         {
-            int over=Elem.getLenght()-extendSize;
+            int over=Elem.getLength()-extendSize;
             if (over%2)
-                Elem.trimSites(over/2,(over/2+1));
+                Elem.trimSite(over/2,(over/2+1));
             else
-                Elem.trimSites(over/2);
+                Elem.trimSite(over/2);
 
         }
         else if (lenght<extendSize)
         {
 
-            int under=extendSize-Elem.getLenght();
+            int under=extendSize-Elem.getLength();
             if (under%2)
                 Elem.extendSite(under/2,(under/2+1));
             else
@@ -405,7 +414,7 @@ vector<float> getAvgSignal(uRegionExperiment & ourRegionExp, int extendSize)
             emptyCount++;
             emptyCount++;
             cerr<<" Skipping region with no signal. Output: " <<endl;
-            Elem.debugElem();
+//            Elem.debugElem();
         }
         for (int i=0 ; i< (int)tempSignal.size(); i++)
         {
